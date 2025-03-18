@@ -16,3 +16,10 @@ export const getMeals = async () => {
   // get: 한가지 열만 찾고싶을 때
   return db.prepare("SELECT * FROM meals").all();
 }
+
+// 가져와야하는 식사 정보 (slug)
+// WHERE slug가  위의 slug와 동일 해야한다
+// 이 때 '?'를 placeholder로 사용 (SQL Injection 방지)
+export const getMeal = (slug) => {
+  return db.prepare("SELECT * FROM meals WHERE slug = ?").get(slug);
+}
