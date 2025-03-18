@@ -1,9 +1,16 @@
 import Image from "next/image";
 import clasess from "./page.module.css"
 import { getMeal } from "@/lib/meals";
+import { notFound } from "next/navigation";
 
 const MealDetailsPage = ({ params }) => {
   const meal = getMeal(params.mealSlug);
+
+  // 원하는 음식을 못 찾았을 경우 ( not found )
+  // 제일 가까운 not-found 페이지를 보여준다.
+  if (!meal) {
+    notFound()
+  }
 
   // 특수문자로 식별되는 줄바꿈을 <br /> 로 변환
   meal.instructions = meal.instructions.replace(/\n/g, "<br />");
