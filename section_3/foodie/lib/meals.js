@@ -1,6 +1,7 @@
 // sql import
 import sql from "better-sqlite3";
-import { resolve } from "styled-jsx/css";
+import slugify from "slugify";
+import xss from "xss";
 
 // DB의 이름을 문자열로 sql 함수에 전달
 const db = sql("meals.db");
@@ -22,4 +23,13 @@ export const getMeals = async () => {
 // 이 때 '?'를 placeholder로 사용 (SQL Injection 방지)
 export const getMeal = (slug) => {
   return db.prepare("SELECT * FROM meals WHERE slug = ?").get(slug);
+}
+
+// 식사 정보 저장
+export const saveMeal = (meal) => {
+  // title 모든 문자 소문자로 설정
+  meal.slug = slugify(meal.title, { lower: true});
+
+  // 사용자 입력값을 필터링하여 XSS 공격을 방지
+  meal.instructions = xss(meal.instructions);
 }
