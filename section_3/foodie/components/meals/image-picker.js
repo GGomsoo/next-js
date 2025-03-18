@@ -18,6 +18,7 @@ const ImagePicker = ({ label, name }) => {
 
     // 파일이 없으면 아무것도 하지 않는다
     if (!file) {
+      seetPickedImage(null);
       return ;
     }
 
@@ -45,6 +46,7 @@ const ImagePicker = ({ label, name }) => {
           name={name}
           ref={ImageInputRef}
           onChange={handleImageChange}
+          required
         />
         <button
           className={classes.button}
