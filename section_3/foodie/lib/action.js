@@ -1,5 +1,8 @@
 "use server";
 
+import { redirect } from "next/navigation";
+import { saveMeal } from "./meals";
+
 // form과 연결, form에서 action을 사용하여 서버로 데이터를 전송
 export const shareMeal = async (formData) => {
   // form 데이터를 meal 객체로 변환
@@ -12,5 +15,6 @@ export const shareMeal = async (formData) => {
     creator_email: formData.get("email"),
   }
 
-  console.log(meal);
+  await saveMeal(meal);
+  redirect("/meals");
 };
