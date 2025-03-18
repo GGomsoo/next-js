@@ -9,7 +9,8 @@ export const getMeals = async () => {
   // 임의로 추가 지연 생성
   // State(상태) 로딩 다룰 때 도움
   await new Promise((resolve) => setTimeout(resolve, 2000));
-
+  
+  // throw new Error("Loading meals failed");
   // all: 데이터를 불러올 때
   // run: 데이터를 주입시킬 때
   // get: 한가지 열만 찾고싶을 때
