@@ -3,6 +3,20 @@ import clasess from "./page.module.css"
 import { getMeal } from "@/lib/meals";
 import { notFound } from "next/navigation";
 
+// 동적 메타데이터 설정함수
+// NextJS가 generateMetadata라는 함수를 찾게된다.
+export const generateMetadata = ({ params}) => {
+  const meal = getMeal(params.mealSlug);
+  if (!meal) {
+    notFound();
+  }
+
+  return {
+    title: meal.title,
+    description: meal.summary,
+  };
+}
+
 const MealDetailsPage = ({ params }) => {
   const meal = getMeal(params.mealSlug);
 
