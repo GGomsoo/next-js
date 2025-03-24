@@ -9,7 +9,10 @@ const isInvalidText = (text) => {
 };
 
 // form과 연결, form에서 action을 사용하여 서버로 데이터를 전송
-export const shareMeal = async (formData) => {
+// *추가: shareMeal 함수는 2개의 인자를 받는다
+// 1. 이전 상태값 (prevState) -> 이전 상태값을 사용하지 않는 경우도 있음
+// 2. form 데이터 (formData) -> form 데이터를 meal 객체로 변환
+export const shareMeal = async (prevState, formData) => {
   // form 데이터를 meal 객체로 변환
   const meal = {
     title: formData.get("title"),
@@ -30,7 +33,9 @@ export const shareMeal = async (formData) => {
     !meal.creator_email.includes("@") ||
     !meal.image || meal.image.size === 0
   ) {
-    throw new Error("Invalid input");
+    return {
+      message: "Invalid input."
+    };
   }
 
   await saveMeal(meal);
