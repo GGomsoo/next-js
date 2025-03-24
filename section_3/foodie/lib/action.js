@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { saveMeal } from "./meals";
+import { revalidatePath } from "next/cache";
 
 // 빈 문자열인지 검증
 const isInvalidText = (text) => {
@@ -39,5 +40,10 @@ export const shareMeal = async (prevState, formData) => {
   }
 
   await saveMeal(meal);
+  // 특정 경로에 속하는 캐시의 유효성 재검사를 요청하는 NextJS에서 제공하는 함수
+  // 두번째 인자로 layout, page 옵션이 있음
+  // page: 해당 경로만 검사하겠다
+  // layout: 중첩된 모든 경로의 페이지를 검사하겠다
+  revalidatePath("/meals");
   redirect("/meals");
 };
