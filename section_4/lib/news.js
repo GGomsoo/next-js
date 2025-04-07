@@ -1,12 +1,14 @@
 import sql from "better-sqlite3";
 import { DUMMY_NEWS } from '@/dummy-news';
+import { resolve } from "styled-jsx/css";
 
 // 루트 프로젝트 디렉토리에서 상대 경로를 사용하여 데이터베이스 파일을 지정합니다.
 const db = sql("data.db")
 
-export function getAllNews() {
+export async function getAllNews() {
   // DB의 모든 데이터 불러오기
   const news = db.prepare("SELECT * FROM news").all();
+  await new Promise(resolve => setTimeout(resolve, 2000));
   return news;
 };
 
