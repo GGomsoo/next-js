@@ -1,4 +1,4 @@
-import { unstable_noStore } from 'next/cache'; 
+// import { unstable_noStore } from 'next/cache'; 
 
 import Messages from '@/components/messages';
 
@@ -14,9 +14,9 @@ import Messages from '@/components/messages';
 // export const dynamic = "force-dynamic";
 
 export default async function MessagesPage() {
-  // 캐싱을 하지 않도록 설정하는 함수
-  // 특정 컴포넌트에 대해 캐싱을 막고 싶을 때 사용하면 유용
-  unstable_noStore();
+  // // 캐싱을 하지 않도록 설정하는 함수
+  // // 특정 컴포넌트에 대해 캐싱을 막고 싶을 때 사용하면 유용
+  // unstable_noStore();
 
   const response = await fetch('http://localhost:8080/messages', {
     // // 새 요청을 항상 전송
@@ -29,6 +29,9 @@ export default async function MessagesPage() {
     // next: {
     //   revalidate: 5,
     // }
+    next: {
+      tags: ["msg"],
+    }
   });
   const messages = await response.json();
 
