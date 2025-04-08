@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 import { storePost, updatePostLikeStatus } from '@/lib/posts';
 import { uploadImage } from '@/lib/cloudinary';
+import { revalidatePath } from 'next/cache';
 
 export async function createPost(prevState, formData) {
   // 170
@@ -51,6 +52,10 @@ export async function createPost(prevState, formData) {
   redirect("/feed");
 };
 
-export const togglePostLikeStatus = (postId) => {
-  updatePostLikeStatus(postId, 2);
+export const togglePostLikeStatus = async (postId) => {
+  await updatePostLikeStatus(postId, 2);
+
+  // 데이터를 변경 할 때 마다 호출해야 하는 함수
+  // 어떤 페이지가 변경 되었는지, 어떤 데이터가 변경 되었는지를 인자로 사용
+  revalidatePath("/", "layout");
 }
