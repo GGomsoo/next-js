@@ -2,17 +2,21 @@ import { storePost } from '@/lib/posts';
 
 export default function NewPostPage() {
   async function createPost(formData) {
+    // 170
+    // 해당 함수를 서버 액션으로 만들기 위해서
+    // 함수 안에 "use server"를 추가해야 한다.
     "use server";
     const title = formData.get('title');
     const image = formData.get('image');
     const content = formData.get('content');
 
-    storePost({
-      imageUrl: '',
-      title,
-      content,
-      userId: 1
-    })
+    console.log(title, image, content);
+    // storePost({
+    //   imageUrl: '',
+    //   title,
+    //   content,
+    //   userId: 1
+    // })
   }
 
   return (
