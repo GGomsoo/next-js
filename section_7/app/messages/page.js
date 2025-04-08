@@ -14,7 +14,7 @@ import { getMessages } from '@/lib/messages';
 // // force-static = 캐싱을 강제함. 캐싱 안함
 // export const dynamic = "force-dynamic";
 
-export default function MessagesPage() {
+export default async function MessagesPage() {
   // // // 캐싱을 하지 않도록 설정하는 함수
   // // // 특정 컴포넌트에 대해 캐싱을 막고 싶을 때 사용하면 유용
   // // unstable_noStore();
@@ -35,7 +35,7 @@ export default function MessagesPage() {
   //   }
   // });
   // const messages = await response.json();
-  const messages = getMessages();
+  const messages = await getMessages();
 
   if (!messages || messages.length === 0) {
     return <p>No messages found</p>;
