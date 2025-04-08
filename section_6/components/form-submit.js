@@ -1,11 +1,11 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useFormStatus } from "react-dom";
 
 
 const FormSubmit = () => {
-  const state = useFormState();
-  if (state.pending) {
+  const status = useFormStatus();
+  if (status.pending) {
     return <p>Creating Post...</p>
   }
 
