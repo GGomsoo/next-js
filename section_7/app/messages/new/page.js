@@ -8,11 +8,11 @@ export default function NewMessagePage() {
     'use server';
 
     const message = formData.get('message');
-    // addMessage(message);
-    // 해당 태그가 있는 모든 캐시된 데이터를 재검증하고 폐기
-    // 태그는 react-query에서 queryKey와 비슷한 느낌
-    // 해당 함수의 역할은 react-query의 invalidateQueries와 비슷한 느낌
-    revalidateTag("msg");
+    addMessage(message);
+    // // 해당 태그가 있는 모든 캐시된 데이터를 재검증하고 폐기
+    // // 태그는 react-query에서 queryKey와 비슷한 느낌
+    // // 해당 함수의 역할은 react-query의 invalidateQueries와 비슷한 느낌
+    // revalidateTag("msg");
     redirect('/messages');
   }
 
