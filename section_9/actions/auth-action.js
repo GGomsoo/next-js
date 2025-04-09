@@ -1,6 +1,6 @@
 "use server";
 
-import { createAuthSession } from "@/lib/auth";
+import { createAuthSession, destroySession } from "@/lib/auth";
 import { hashUserPassword, verifyPassword } from "@/lib/hash";
 import { createUser, getUserByEmail } from "@/lib/user";
 import { redirect } from "next/navigation";
@@ -94,3 +94,9 @@ export const auth = async (mode, prevState, formData) => {
 
   return signup(prevState, formData);
 }
+
+// 로그아웃 함수
+export const Logout = async () => {
+  await destroySession();
+  redirect("/");
+};

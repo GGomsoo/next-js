@@ -60,6 +60,24 @@ export const verifyAuth = async () => {
       const sessionCookie = lucia.createBlankSessionCookie();
       cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
     }
-  } catch (err) {}
+  } catch (err) { }
   return result;
+};
+
+export const destroySession = async () => {
+  const { session } = await verifyAuth();
+
+  // 세션이 없다 === 처음부터 세션 쿠키가 없다 === 인증되지 않았다
+  if (!session) {
+    return {
+      error: "인증되지 않음"
+    };
+  };
+
+  // 세션이 존재하는 경우 세션을 무효화
+  // 세션을 무효화하면 DB에서 세션이 삭제됨
+  await lucia.invalidateSession(session.id);
+  // 세션 쿠키를 삭제
+  const sessionCookie = lucia.createBlankSessionCookie();
+  cookies().set(sessionCookie.name, sessionCookie.value, sessionCookie.attributes);
 }
