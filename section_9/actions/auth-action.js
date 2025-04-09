@@ -85,3 +85,12 @@ export const Login = async (prevState, formData) => {
   await createAuthSession(existingUser.id);
   redirect("/training");
 };
+
+// 모드에 따라 로그인과 회원가입을 구분하는 함수
+export const auth = async (mode, prevState, formData) => {
+  if (mode === "login") {
+    return Login(prevState, formData);
+  };
+
+  return signup(prevState, formData);
+}
