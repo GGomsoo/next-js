@@ -1,8 +1,8 @@
 "use server";
 
 import { createAuthSession } from "@/lib/auth";
-import { hashUserPassword } from "@/lib/hash";
-import { createUser } from "@/lib/user";
+import { hashUserPassword, verifyPassword } from "@/lib/hash";
+import { createUser, getUserByEmail } from "@/lib/user";
 import { redirect } from "next/navigation";
 
 // 회원가입 서버 액션을 위한 함수
@@ -54,5 +54,34 @@ export const signup = async (prevState, formData) => {
       };
     }
     throw err;
-  }
-}
+  };
+};
+
+export const Login = async (prevState, formData) => {
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  // 이메일을 통해 회원가입이 되어있는지 검증
+  const existingUser = await getUserByEmail(email);
+  if (!existingUser) {
+    return {
+      errors: {
+        email: "사용자를 찾을 수 없다!",
+      }
+    };
+  };
+
+  // 비밀번호 검증
+  // 이메일은 존재하지만, 비밀번호가 틀렸으 경우에 대한 처리
+  const isValidPassword = verifyPassword(existingUser.password, password);
+  if (!isValidPassword) {
+    return {
+      errors: {
+        password: "비밀번호가 틀렸습니다.",
+      }
+    };
+  };
+
+  await createAuthSession(existingUser.id);
+  redirect("/training");
+};

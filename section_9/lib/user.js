@@ -9,4 +9,9 @@ export const createUser = (email, password) => {
   
   // 새로 생성된 ID를 return
   return result.lastInsertRowid; 
-}
+};
+
+// 이메일을 통해 사용자 정보를 호출
+export const getUserByEmail = (email) => {
+  return db.prepare("SELECT * FROM users WHERE email = ?").get(email);
+};
