@@ -1,5 +1,6 @@
 "use server";
 
+import { hashUserPassword } from "@/lib/hash";
 import { createUser } from "@/lib/user";
 
 // 회원가입 서버 액션을 위한 함수
@@ -31,5 +32,8 @@ export const signup = async (prevState, formData) => {
   // 이메일과 패스워드 검증 후 유효한 경우, DB에 저장
   // createUser(email, password) 로 바로 저장할 경우 패스워드가 평문으로 저장됨
   // 보안에 매우 안좋음.
-  createUser(email, password);
+
+  // 해싱 처리 후 DB에 저장
+  const hashedPassword = hashUserPassword(password);
+  createUser(email, hashedPassword);
 }
