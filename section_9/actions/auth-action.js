@@ -1,5 +1,6 @@
 "use server";
 
+import { createAuthSession } from "@/lib/auth";
 import { hashUserPassword } from "@/lib/hash";
 import { createUser } from "@/lib/user";
 import { redirect } from "next/navigation";
@@ -25,7 +26,7 @@ export const signup = async (prevState, formData) => {
 
   // 에러 존재 여부 확인 후 return
   if (Object.keys(errors).length > 0) {
-    return { 
+    return {
       errors,
     };
   };
@@ -37,7 +38,11 @@ export const signup = async (prevState, formData) => {
   // 해싱 처리 후 DB에 저장
   const hashedPassword = hashUserPassword(password);
   try {
-    createUser(email, hashedPassword);
+    const id = createUser(email, hashedPassword);
+    // 새로운 사용자가 생성될 때 마다 새로운 세션을 생성
+    await createAuthSession(id);
+    // 회원가입 다 통과하면 트레이닝 페이지로 리다이렉트
+    redirect("/training");
   } catch (err) {
     // 이메일 중복에 대한 에러 문구 처리
     if (err.code === "SQLITE_CONSTRAINT_UNIQUE") {
@@ -50,7 +55,4 @@ export const signup = async (prevState, formData) => {
     }
     throw err;
   }
-
-  // 회원가입 다 통과하면 트레이닝 페이지로 리다이렉트
-  redirect("/training");
 }
