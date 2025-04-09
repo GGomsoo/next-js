@@ -10,6 +10,7 @@ export default function Header() {
           src={logo}
           width={100}
           height={100}
+          priority // 페이지 불러올 때, 이 이미지는 항상 표시된다는걸 알림
           alt="Mobile phone with posts feed on it"
         />
       </Link>
