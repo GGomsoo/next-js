@@ -7,14 +7,28 @@ import { formatDate } from '@/lib/format';
 import LikeButton from './like-icon';
 import { togglePostLikeStatus } from '@/actions/posts';
 
+const imageLoader = (config) => {
+  // 콘솔창에 해당 이미지에 대한 src, width, quality가 출력된다
+  // 이미지 서버에서 이미지를 선 최적화 한 후, Image 컴포넌트로 출력하기 위한 작업
+  // console.log(config);
+  const urlStart = config.src.split("upload/")[0];
+  const urlEnd = config.src.split("upload/")[1];
+  const transformations = `w_200,q_${config.quality}`;
+  return `${urlStart}upload/${transformations}/${urlEnd}`;
+};
+
 function Post({ post, action }) {
   return (
     <article className="post">
       <div className="post-image">
-        <Image 
-        src={post.image} 
-        fill
-        alt={post.title} />
+        <Image
+          loader={imageLoader}
+          src={post.image}
+          width={200}
+          height={120}
+          alt={post.title}
+          quality={50}
+        />
       </div>
       <div className="post-content">
         <header>
