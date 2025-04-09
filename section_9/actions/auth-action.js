@@ -2,6 +2,7 @@
 
 import { hashUserPassword } from "@/lib/hash";
 import { createUser } from "@/lib/user";
+import { redirect } from "next/navigation";
 
 // 회원가입 서버 액션을 위한 함수
 export const signup = async (prevState, formData) => {
@@ -35,5 +36,21 @@ export const signup = async (prevState, formData) => {
 
   // 해싱 처리 후 DB에 저장
   const hashedPassword = hashUserPassword(password);
-  createUser(email, hashedPassword);
+  try {
+    createUser(email, hashedPassword);
+  } catch (err) {
+    // 이메일 중복에 대한 에러 문구 처리
+    if (err.code === "SQLITE_CONSTRAINT_UNIQUE") {
+      errors.email = "이미 사용중인 이메일이다!";
+      return {
+        errors: {
+          email: "이미 사용중인 이메일이다!",
+        }
+      };
+    }
+    throw err;
+  }
+
+  // 회원가입 다 통과하면 트레이닝 페이지로 리다이렉트
+  redirect("/training");
 }
