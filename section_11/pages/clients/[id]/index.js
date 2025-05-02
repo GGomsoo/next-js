@@ -2,10 +2,11 @@ import { useRouter } from 'next/router';
 
 const ClientsProjectPage = () => {
   const router = useRouter();
+  const clientName = router.query.id;
   console.log(router.query);
   return (
     <div>
-      <h1>Client Project Page</h1>
+      <h1>{clientName}'s Project Page</h1>
     </div>
   );
 }
